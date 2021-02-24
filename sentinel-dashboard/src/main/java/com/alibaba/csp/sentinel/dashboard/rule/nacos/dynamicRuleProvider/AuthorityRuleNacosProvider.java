@@ -35,7 +35,7 @@ public class AuthorityRuleNacosProvider implements DynamicRuleProvider<List<Auth
     @Override
     public List<AuthorityRuleEntity> getRules(String appName) throws Exception {
         String rules = configService.getConfig(appName + nacosConfigProperties.getAuthorityRuleSuffix(), nacosConfigProperties.getGroupId(), 3000);
-        logger.info("拉取访问控制规则:\n{}", rules);
+        logger.info("拉取{}访问控制规则:\n{}", appName, rules);
         if (StringUtils.isEmpty(rules)) {
             return new ArrayList<>();
         }

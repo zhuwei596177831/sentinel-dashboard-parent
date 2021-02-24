@@ -34,7 +34,7 @@ public class DegradeRuleNacosProvider implements DynamicRuleProvider<List<Degrad
     @Override
     public List<DegradeRuleEntity> getRules(String appName) throws Exception {
         String rules = configService.getConfig(appName + nacosConfigProperties.getDegradeRuleSuffix(), nacosConfigProperties.getGroupId(), 3000);
-        logger.info("拉取熔断降级规则:\n{}", rules);
+        logger.info("拉取{}熔断降级规则:\n{}", appName, rules);
         if (StringUtils.isEmpty(rules)) {
             return new ArrayList<>();
         }

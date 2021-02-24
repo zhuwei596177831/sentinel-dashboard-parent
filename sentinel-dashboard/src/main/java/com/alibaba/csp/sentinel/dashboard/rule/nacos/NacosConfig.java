@@ -15,6 +15,7 @@
  */
 package com.alibaba.csp.sentinel.dashboard.rule.nacos;
 
+import com.alibaba.csp.sentinel.dashboard.entity.gateway.GatewayFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.entity.rule.*;
 import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
@@ -84,6 +85,16 @@ public class NacosConfig {
     @Bean
     public Converter<String, List<ParamFlowRule>> paramFlowRuleDecoder() {
         return s -> JSON.parseArray(s, ParamFlowRule.class);
+    }
+
+    @Bean
+    public Converter<List<GatewayFlowRuleEntity>, String> gatewayFlowRuleEntityEncoder() {
+        return JSON::toJSONString;
+    }
+
+    @Bean
+    public Converter<String, List<GatewayFlowRuleEntity>> gatewayFlowRuleEntityDecoder() {
+        return s -> JSON.parseArray(s, GatewayFlowRuleEntity.class);
     }
 
     /**

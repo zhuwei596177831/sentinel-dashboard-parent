@@ -22,6 +22,7 @@ public class NacosConfigProperties {
     private String degradeRuleSuffix;
     private String authorityRuleSuffix;
     private String paramFlowRuleSuffix;
+    private String gatewayFlowRuleSuffix;
 
     public String getIp() {
         return ip;
@@ -93,5 +94,13 @@ public class NacosConfigProperties {
 
     public void setParamFlowRuleSuffix(String paramFlowRuleSuffix) {
         this.paramFlowRuleSuffix = paramFlowRuleSuffix;
+    }
+
+    public String getGatewayFlowRuleSuffix() {
+        return gatewayFlowRuleSuffix;
+    }
+
+    public void setGatewayFlowRuleSuffix(String gatewayFlowRuleSuffix) {
+        this.gatewayFlowRuleSuffix = gatewayFlowRuleSuffix;
     }
 }

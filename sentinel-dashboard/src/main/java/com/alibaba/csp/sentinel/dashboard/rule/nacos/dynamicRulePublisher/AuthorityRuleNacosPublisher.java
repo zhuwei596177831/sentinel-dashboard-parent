@@ -48,6 +48,6 @@ public class AuthorityRuleNacosPublisher implements DynamicRulePublisher<List<Au
         if (flag) {
             name = "成功";
         }
-        logger.info("推送访问控制规则" + name + "：\n{}", JSON.toJSONString(realRules), true);
+        logger.info("推送{}访问控制规则" + name + "：\n{}", app, JSON.toJSONString(realRules), true);
     }
 }

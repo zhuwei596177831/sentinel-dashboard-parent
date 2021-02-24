@@ -60,7 +60,7 @@ public class FlowRuleNacosPublisher implements DynamicRulePublisher<List<FlowRul
         if (flag) {
             name = "成功";
         }
-        logger.info("推送流量控制规则" + name + "：\n{}",
+        logger.info("推送{}流量控制规则" + name + "：\n{}", app,
                 JSON.toJSONString(rules.stream().map(FlowRuleEntity::toRule).collect(Collectors.toList()), true));
     }
 }

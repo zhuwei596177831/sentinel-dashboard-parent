@@ -45,7 +45,7 @@ public class DegradeRuleNacosPublisher implements DynamicRulePublisher<List<Degr
         if (flag) {
             name = "成功";
         }
-        logger.info("推送熔断降级规则" + name + "：\n{}",
+        logger.info("推送{}熔断降级规则" + name + "：\n{}", app,
                 JSON.toJSONString(rules.stream().map(DegradeRuleEntity::toRule).collect(Collectors.toList()), true));
     }
 }

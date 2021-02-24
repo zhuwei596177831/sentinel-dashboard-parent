@@ -35,7 +35,7 @@ public class ParamFlowRuleNacosProvider implements DynamicRuleProvider<List<Para
     @Override
     public List<ParamFlowRuleEntity> getRules(String appName) throws Exception {
         String rules = configService.getConfig(appName + nacosConfigProperties.getParamFlowRuleSuffix(), nacosConfigProperties.getGroupId(), 3000);
-        logger.info("拉取热点参数规则:\n{}", rules);
+        logger.info("拉取{}热点参数规则:\n{}", appName, rules);
         if (StringUtils.isEmpty(rules)) {
             return new ArrayList<>();
         }

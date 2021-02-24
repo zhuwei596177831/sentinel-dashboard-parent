@@ -46,6 +46,6 @@ public class ParamFlowRuleNacosPublisher implements DynamicRulePublisher<List<Pa
         if (flag) {
             name = "成功";
         }
-        logger.info("推送热点参数规则" + name + "：\n{}", JSON.toJSONString(realRules, true));
+        logger.info("推送{}热点参数规则" + name + "：\n{}", app, JSON.toJSONString(realRules, true));
     }
 }
