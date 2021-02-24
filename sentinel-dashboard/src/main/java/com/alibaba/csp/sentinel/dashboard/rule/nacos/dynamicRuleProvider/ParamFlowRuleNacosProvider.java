@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.dashboard.entity.rule.ParamFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRuleProvider;
 import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigProperties;
 import com.alibaba.csp.sentinel.datasource.Converter;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
 import com.alibaba.nacos.api.config.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class ParamFlowRuleNacosProvider implements DynamicRuleProvider<List<Para
     @Autowired
     private ConfigService configService;
     @Autowired
-    private Converter<String, List<ParamFlowRuleEntity>> converter;
+    private Converter<String, List<ParamFlowRule>> converter;
     @Autowired
     private NacosConfigProperties nacosConfigProperties;
 
@@ -38,6 +39,12 @@ public class ParamFlowRuleNacosProvider implements DynamicRuleProvider<List<Para
         if (StringUtils.isEmpty(rules)) {
             return new ArrayList<>();
         }
-        return converter.convert(rules);
+        List<ParamFlowRule> paramFlowRules = converter.convert(rules);
+        List<ParamFlowRuleEntity> result = new ArrayList<>(paramFlowRules.size());
+        for (ParamFlowRule paramFlowRule : paramFlowRules) {
+            result.add(ParamFlowRuleEntity.fromAuthorityRule(appName, null, null, paramFlowRule));
+        }
+        return result;
     }
+
 }

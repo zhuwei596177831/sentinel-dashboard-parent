@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.dashboard.entity.rule.ParamFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
 import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigProperties;
 import com.alibaba.csp.sentinel.datasource.Converter;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -28,7 +29,7 @@ public class ParamFlowRuleNacosPublisher implements DynamicRulePublisher<List<Pa
     @Autowired
     private ConfigService configService;
     @Autowired
-    private Converter<List<ParamFlowRuleEntity>, String> converter;
+    private Converter<List<ParamFlowRule>, String> converter;
     @Autowired
     private NacosConfigProperties nacosConfigProperties;
 
@@ -38,13 +39,13 @@ public class ParamFlowRuleNacosPublisher implements DynamicRulePublisher<List<Pa
         if (rules == null) {
             return;
         }
+        List<ParamFlowRule> realRules = rules.stream().map(ParamFlowRuleEntity::getRule).collect(Collectors.toList());
         boolean flag = configService.publishConfig(app + nacosConfigProperties.getParamFlowRuleSuffix(),
-                nacosConfigProperties.getGroupId(), converter.convert(rules));
+                nacosConfigProperties.getGroupId(), converter.convert(realRules));
         String name = "失败";
         if (flag) {
             name = "成功";
         }
-        logger.info("推送热点参数规则" + name + "：\n{}",
-                JSON.toJSONString(rules.stream().map(ParamFlowRuleEntity::toRule).collect(Collectors.toList()), true));
+        logger.info("推送热点参数规则" + name + "：\n{}", JSON.toJSONString(realRules, true));
     }
 }

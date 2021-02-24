@@ -160,12 +160,12 @@ public class ParamFlowRuleController {
         if (StringUtil.isBlank(entity.getApp())) {
             return Result.ofFail(-1, "app can't be null or empty");
         }
-        if (StringUtil.isBlank(entity.getIp())) {
-            return Result.ofFail(-1, "ip can't be null or empty");
-        }
-        if (entity.getPort() == null || entity.getPort() <= 0) {
-            return Result.ofFail(-1, "port can't be null");
-        }
+//        if (StringUtil.isBlank(entity.getIp())) {
+//            return Result.ofFail(-1, "ip can't be null or empty");
+//        }
+//        if (entity.getPort() == null || entity.getPort() <= 0) {
+//            return Result.ofFail(-1, "port can't be null");
+//        }
         if (entity.getRule() == null) {
             return Result.ofFail(-1, "rule can't be null");
         }
@@ -206,9 +206,9 @@ public class ParamFlowRuleController {
         if (checkResult != null) {
             return checkResult;
         }
-        if (!checkIfSupported(entity.getApp(), entity.getIp(), entity.getPort())) {
-            return unsupportedVersion();
-        }
+//        if (!checkIfSupported(entity.getApp(), entity.getIp(), entity.getPort())) {
+//            return unsupportedVersion();
+//        }
         entity.setId(id);
         Date date = new Date();
         entity.setGmtCreate(oldEntity.getGmtCreate());

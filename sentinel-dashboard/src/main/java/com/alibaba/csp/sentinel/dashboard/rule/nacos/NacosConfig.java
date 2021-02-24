@@ -15,11 +15,10 @@
  */
 package com.alibaba.csp.sentinel.dashboard.rule.nacos;
 
-import com.alibaba.csp.sentinel.dashboard.entity.rule.AuthorityRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.entity.rule.DegradeRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.entity.rule.FlowRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.entity.rule.ParamFlowRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.entity.rule.*;
 import com.alibaba.csp.sentinel.datasource.Converter;
+import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigFactory;
@@ -58,24 +57,33 @@ public class NacosConfig {
         return s -> JSON.parseArray(s, DegradeRuleEntity.class);
     }
 
+    /**
+     * @author: 朱伟伟
+     * @date: 2021-02-24 15:26
+     * @description: 以下converter泛型为entity里的rule
+     * <p>
+     * 解决推送到nacos客户端后 访问控制规则、热点参数规则不生效
+     * <p>
+     * sentinel客户端的AuthorityRule、ParamFlowRule与AuthorityRuleEntity、ParamFlowRuleEntity属性格式不一致
+     **/
     @Bean
-    public Converter<List<AuthorityRuleEntity>, String> authorityRuleEntityEncoder() {
+    public Converter<List<AuthorityRule>, String> authorityRuleEncoder() {
         return JSON::toJSONString;
     }
 
     @Bean
-    public Converter<String, List<AuthorityRuleEntity>> authorityRuleEntityDecoder() {
-        return s -> JSON.parseArray(s, AuthorityRuleEntity.class);
+    public Converter<String, List<AuthorityRule>> authorityRuleDecoder() {
+        return s -> JSON.parseArray(s, AuthorityRule.class);
     }
 
     @Bean
-    public Converter<List<ParamFlowRuleEntity>, String> paramFlowRuleEntityEncoder() {
+    public Converter<List<ParamFlowRule>, String> paramFlowRuleEncoder() {
         return JSON::toJSONString;
     }
 
     @Bean
-    public Converter<String, List<ParamFlowRuleEntity>> paramFlowRuleEntityDecoder() {
-        return s -> JSON.parseArray(s, ParamFlowRuleEntity.class);
+    public Converter<String, List<ParamFlowRule>> paramFlowRuleDecoder() {
+        return s -> JSON.parseArray(s, ParamFlowRule.class);
     }
 
     /**

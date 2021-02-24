@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.dashboard.entity.rule.AuthorityRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRuleProvider;
 import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigProperties;
 import com.alibaba.csp.sentinel.datasource.Converter;
+import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
 import com.alibaba.nacos.api.config.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class AuthorityRuleNacosProvider implements DynamicRuleProvider<List<Auth
     @Autowired
     private ConfigService configService;
     @Autowired
-    private Converter<String, List<AuthorityRuleEntity>> converter;
+    private Converter<String, List<AuthorityRule>> converter;
     @Autowired
     private NacosConfigProperties nacosConfigProperties;
 
@@ -38,6 +39,11 @@ public class AuthorityRuleNacosProvider implements DynamicRuleProvider<List<Auth
         if (StringUtils.isEmpty(rules)) {
             return new ArrayList<>();
         }
-        return converter.convert(rules);
+        List<AuthorityRule> authorityRules = converter.convert(rules);
+        List<AuthorityRuleEntity> result = new ArrayList<>(authorityRules.size());
+        for (AuthorityRule authorityRule : authorityRules) {
+            result.add(AuthorityRuleEntity.fromAuthorityRule(appName, null, null, authorityRule));
+        }
+        return result;
     }
 }

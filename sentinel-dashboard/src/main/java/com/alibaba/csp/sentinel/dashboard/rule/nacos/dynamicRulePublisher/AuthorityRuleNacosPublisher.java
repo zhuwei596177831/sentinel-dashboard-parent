@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.dashboard.entity.rule.AuthorityRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
 import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigProperties;
 import com.alibaba.csp.sentinel.datasource.Converter;
+import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -28,7 +29,7 @@ public class AuthorityRuleNacosPublisher implements DynamicRulePublisher<List<Au
     @Autowired
     private ConfigService configService;
     @Autowired
-    private Converter<List<AuthorityRuleEntity>, String> converter;
+    private Converter<List<AuthorityRule>, String> converter;
     @Autowired
     private NacosConfigProperties nacosConfigProperties;
 
@@ -38,13 +39,15 @@ public class AuthorityRuleNacosPublisher implements DynamicRulePublisher<List<Au
         if (rules == null) {
             return;
         }
-        boolean flag = configService.publishConfig(app + nacosConfigProperties.getAuthorityRuleSuffix(),
-                nacosConfigProperties.getGroupId(), converter.convert(rules));
+        List<AuthorityRule> realRules = rules.stream().map(AuthorityRuleEntity::getRule).collect(Collectors.toList());
+        boolean flag = configService.publishConfig(
+                app + nacosConfigProperties.getAuthorityRuleSuffix(),
+                nacosConfigProperties.getGroupId(),
+                converter.convert(realRules));
         String name = "失败";
         if (flag) {
             name = "成功";
         }
-        logger.info("推送访问控制规则" + name + "：\n{}",
-                JSON.toJSONString(rules.stream().map(AuthorityRuleEntity::toRule).collect(Collectors.toList()), true));
+        logger.info("推送访问控制规则" + name + "：\n{}", JSON.toJSONString(realRules), true);
     }
 }
