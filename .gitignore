@@ -19,6 +19,7 @@ target/
 *.iml
 *.ipr
 *.log
+*.gz
 
 ### NetBeans ###
 /nbproject/private/
@@ -30,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+sentinel-dashboard.log.2021-02-24.0.gz
